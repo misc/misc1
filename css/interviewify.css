@@ -1,0 +1,71 @@
+html {
+    font: small/normal "Arial", sans-serif;
+}
+header{
+    width: 120px;
+    height: auto;
+    
+    margin: 5px;
+}
+
+label{
+	width: 100%;
+	display: block;
+	clear: both;
+}
+section{
+    margin: 5px 0;
+}
+select{
+    width: 95%;
+}
+
+#refresh-box{
+	display: none;
+}
+
+#refresh-box  p{
+	color: #dd00cc;
+}
+
+#interview-date{
+	width: 108px;
+	clear: both;
+}
+
+#interview-from{
+	width: 65px;
+	clear: both;
+}
+
+#interview-to{
+	width: 65px;
+	clear: both;
+}
+
+#loading{
+    display: none;
+}
+#search{
+    display: none;
+}
+#results{
+    display: none;
+    border-top: 1px solid #ccc;
+}
+.interview-shadow{
+    display: none;
+}
+
+.validation-error-message{
+    display: none;
+}
+
+.not-valid{
+    color: #ff0000;
+}
+
+.notdone{
+    color: #ccc;
+    backgroudn: #f3f3f3;
+}

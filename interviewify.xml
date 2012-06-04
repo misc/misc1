@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="Interviewify" author="Uno" author_email="uno@spotify.com" height="30">
+<Require feature="views"/>
+<Require feature="oauthpopup"/>
+<Require feature="dynamic-height"/>
+<Require feature="settitle"/>
+<Require feature="setprefs"/>
+<Require feature="idi"/>
+<Require feature="google.calendar-0.5.read"/>
+<OAuth>
+<Service name="google">
+<Access url="https://www.google.com/accounts/OAuthGetAccessToken" method="GET"/>
+<Request url="https://www.google.com/accounts/OAuthGetRequestToken?scope=https://spreadsheets.google.com/feeds/%20https://www.google.com/calendar/feeds/%20https://docs.google.com/feeds/" method="GET"/>
+<Authorization url="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_callback=http://oauth.gmodules.com/gadgets/oauthcallback"/>
+</Service>
+</OAuth>
+</ModulePrefs>
+<Content type="html" view="home,profile">
+<![CDATA[
+<!DOCTYPE html>
+<html id="sidebar">
+<head>
+<title>Interviewify</title>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+html {
+font: small/normal "Arial", sans-serif;
+}
+header{
+width: 120px;
+height: auto;
+
+margin: 5px;
+}
+
+label{
+width: 100%;
+display: block;
+clear: both;
+}
+section{
+margin: 5px 0;
+}
+select{
+width: 95%;
+}
+
+#refresh-box{
+display: none;
+}
+
+#refresh-box  p{
+color: #dd00cc;
+}
+
+#interview-date{
+width: 108px;
+clear: both;
+}
+
+#interview-from{
+width: 65px;
+clear: both;
+}
+
+#interview-to{
+width: 65px;
+clear: both;
+}
+
+#loading{
+display: none;
+}
+#search{
+display: none;
+}
+#results{
+display: none;
+         border-top: 1px solid #ccc;
+}
+.interview-shadow{
+display: none;
+}
+
+.validation-error-message{
+display: none;
+}
+
+.not-valid{
+color: #ff0000;
+}
+
+
+</style>
+</head>
+<body>
+<script src="//www.google.com/jsapi?key=ABQIAAAAJvlAV8G0-HKTuWTWFblzvBSgOgMnWhj-Fp--TbhlqZFDU5ANohT-SByi24CroSNs0ntyUPq0aQEr6Q"></script>
+<script src="//gadget-doc-examples.googlecode.com/svn/trunk/opensocial-gadgets/popup.js"></script>
+<header>
+<div id="loading"><img src="http://google-web-toolkit.googlecode.com/svn-history/r8457/trunk/user/src/com/google/gwt/cell/client/loading.gif" /></div>
+
+<div id="refresh-box">
+<p>The source database is ahead of the local! Refreshing!…</p>
+</div>
+</header>
+<div id="tabs">
+<ul>
+<li><a href="#tabs-2" class="tab-switch">Intify</a></li>
+<li><a href="#tabs-1" class="tab-switch">Prefs</a></li>
+</ul>
+<div id="tabs-1">
+<section id="preferences">
+<label for="pref-location">Location</label>
+<select id="pref-location">
+<option value="">Loading...</option>
+</select>
+<input type="button" value="Save" id="save-pref-btn" />
+</section>
+<section>
+<button id="add-interview-cal">Add Interview Calendar</button>
+</section>
+<section>
+<button id="db-refresh">Refresh DB!</button>
+</section>
+</div><!-- #tabs-1 -->
+<div id="tabs-2">
+<section id="search">
+<section id="search-date">
+<label for="interview-date">Date*</label>
+<input type="date" required name="interview-date" id="interview-date" value="2011-10-25" />
+<label for="interview-from">From*</label>
+<input type="time" required name="interview-from" id="interview-from" value="10:00"step="1800" />
+<!--label for="interview-to">To*</label-->
+<input type="hidden" required name="interview-to" id="interview-to" value="11:00" step="1800" />
+</section>
+<section id="search-step">
+<label for="interview-type">Interview Step*</label>
+<select required id="interview-type">
+<option disabled>Loading Choices…</option>
+</select>
+</section>
+<section id="search-language">
+<label for="interview-language">Language</label>
+<select id="interview-language">
+<option disabled>Not done yet!</option>
+</select>
+</section>
+<button id="search-btn">Search</button>
+</section><!-- #search -->
+<section id="results">
+<label for="interview-developer">Developer</label>
+<select id="interview-developer">
+<option disabled>Pick a Interview Type first</option>
+</select>
+<label for="interview-shadow">Shadow</label>
+<select id="interview-shadow">
+<option disabled>Pick a Interview Type first</option>
+</select>
+<label for="interview-room">Room</label>
+<select id="interview-room">
+<option disabled>Choose a date</option>
+</select>
+<button id="submit-btn">Interviewify!</button>
+</section><!-- #results -->
+</div>
+</div>
+<div class="validation-error-message">
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://raw.github.com/spotify/interviewify/master/lib/date.js"></script>
+<script>
+var t = "2";
+
+
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/queue.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/validate.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/GOOGLE.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/db.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/hashit.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/interviewify.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+var scriptUrl = "https://raw.github.com/spotify/interviewify/master/js/main.js?" + t;
+document.write("<script src='" + scriptUrl + "'><\/script>");
+
+</script>
+</body>
+</html>
+]]>
+</Content>
+</Module>
